@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Polyatomic Ions Quiz (Right Column Only)</title>
+<style>
+  :root{
+    --bg:#0f172a; --panel:#111827; --ink:#e5e7eb; --muted:#94a3b8;
+    --accent:#38bdf8; --good:#34d399; --bad:#f87171; --warn:#fbbf24;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
+       background:linear-gradient(180deg,#0b1224, #0f172a 40%, #0b1224 100%);
+       color:var(--ink); min-height:100svh; display:flex; align-items:center; justify-content:center; padding:24px;}
+  .app{width:min(950px,100%); background:rgba(17,24,39,.85); border:1px solid rgba(148,163,184,.2); border-radius:18px; box-shadow:0 10px 30px rgba(0,0,0,.35); overflow:hidden;}
+  header{padding:20px 22px; border-bottom:1px solid rgba(148,163,184,.2); display:flex; justify-content:space-between; align-items:center;}
+  h1{font-size:20px; margin:0}
+  .pill{font-size:12px; padding:6px 10px; border-radius:999px; background:rgba(56,189,248,.15); color:var(--accent); border:1px solid rgba(56,189,248,.35)}
+  main{padding:22px; display:grid; gap:18px}
+  .card{background:rgba(2,6,23,.55); border:1px solid rgba(148,163,184,.2); border-radius:16px; padding:16px}
+  .row{display:flex; flex-wrap:wrap; gap:12px; align-items:center}
+  .tiny{font-size:12px; color:var(--muted)}
+  .name{font-size:20px; font-weight:700}
+  input[type=text]{flex:1 1 280px; min-width:240px; font-size:18px; padding:12px 14px; border-radius:12px; border:1px solid rgba(148,163,184,.25); background:#0b1224; color:var(--ink); outline:none; transition:border .2s,box-shadow .2s}
+  input[type=text]:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgba(56,189,248,.25)}
+  button{appearance:none; border:none; cursor:pointer; padding:10px 14px; border-radius:12px; font-weight:700; background:rgba(56,189,248,.15); color:var(--accent); border:1px solid rgba(56,189,248,.35); transition:filter .2s,transform .06s}
+  button:hover{filter:brightness(1.1)}
+  button:active{transform:translateY(1px)}
+  .btn-alt{background:rgba(148,163,184,.12); color:var(--ink); border-color:rgba(148,163,184,.35)}
+  .badge{padding:6px 10px; border-radius:10px; font-size:12px; border:1px solid rgba(148,163,184,.25)}
+  .ok{color:#052e1a; background:var(--good); border-color:rgba(255,255,255,.35)}
+  .no{color:#3a0d0d; background:var(--bad); border-color:rgba(255,255,255,.35)}
+  .warn{color:#1c1504; background:var(--warn); border-color:rgba(255,255,255,.35)}
+  .feedback{min-height:28px; font-weight:700}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px}
+  .foot{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px}
+  kbd{font-family:ui-monospace,monospace; font-size:12px; padding:2px 6px; border:1px solid rgba(148,163,184,.35); border-bottom-width:2px; border-radius:6px; background:#020617}
+  #setSection{transition:max-height .4s ease,opacity .3s ease; overflow:hidden}
+  #setSection.hidden{max-height:0; opacity:0; padding:0; margin:0; border:none}
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>Polyatomic Ions Quiz — <span class="tiny">Right-column (pink) only</span></h1>
+    <span class="pill">Type answers like <b>NH4+</b>, <b>SO4^2-</b>, <b>O2^2-</b></span>
+  </header>
+  <main>
+    <section class="card">
+      <div class="row" style="justify-content:space-between">
+        <div class="row">
+          <span class="badge">Question <span id="qNum">1</span>/<span id="qTotal">7</span></span>
+          <span class="badge">Correct <span id="correct">0</span></span>
+          <span class="badge">Streak <span id="streak">0</span></span>
+        </div>
+        <div class="grid">
+          <button id="btnCheck">Check</button>
+          <button class="btn-alt" id="btnSkip">Skip</button>
+          <button class="btn-alt" id="btnReveal">Reveal</button>
+          <button class="btn-alt" id="btnReset">Reset</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="row">
+        <div>
+          <div class="tiny">Ion name</div>
+          <div class="name" id="ionName">—</div>
+        </div>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <input id="answer" type="text" placeholder="Type the formula e.g. H3O+ or SO4^2-" autocomplete="off" />
+        <button id="btnNext">Next ►</button>
+      </div>
+      <div class="feedback tiny" id="feedback"></div>
+      <div class="tiny" style="opacity:.9; margin-top:8px">Hints: You can type <kbd>SO4^2-</kbd> or <kbd>SO4-2</kbd>.</div>
+    </section>
+
+    <section class="card" id="setSection">
+      <div class="row" style="justify-content:space-between; align-items:center">
+        <div class="tiny">Set included (right column, pink only):</div>
+        <button class="btn-alt" id="toggleSet">Hide</button>
+      </div>
+      <div class="grid tiny" id="setList">
+        <div>Permanganate → <b>MnO4−</b></div>
+        <div>Peroxide → <b>O2^2−</b></div>
+        <div>Phosphate → <b>PO4^3−</b></div>
+        <div>Sulfate → <b>SO4^2−</b></div>
+        <div>Thiosulfate → <b>S2O3^2−</b></div>
+        <div>Ammonium → <b>NH4+</b></div>
+        <div>Hydronium → <b>H3O+</b></div>
+      </div>
+    </section>
+
+    <div class="foot tiny">
+      <div>Tip: Press <kbd>Enter</kbd> to check, and <kbd>Tab</kbd> to jump to Next.</div>
+      <div>made by chatgpt <3</div>
+    </div>
+  </main>
+</div>
+
+<script>
+const IONS=[{name:'permanganate',formula:'MnO4-',charge:'-1'},{name:'peroxide',formula:'O2^2-',charge:'-2'},{name:'phosphate',formula:'PO4^3-',charge:'-3'},{name:'sulfate',formula:'SO4^2-',charge:'-2'},{name:'thiosulfate',formula:'S2O3^2-',charge:'-2'},{name:'ammonium',formula:'NH4+',charge:'+1'},{name:'hydronium',formula:'H3O+',charge:'+1'}];
+function normalize(i){if(!i)return'';let s=i.trim().replace(/\s+/g,'').replace(/[₀₁₂₃₄₅₆₇₈₉]/g,d=>'0123456789'["₀₁₂₃₄₅₆₇₈₉".indexOf(d)]).replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]/g,d=>'0123456789'["⁰¹²³⁴⁵⁶⁷⁸⁹".indexOf(d)]).replace(/−/g,'-').replace(/\+/g,'+').replace(/\^/g,'^');const m=s.match(/(\^?[+-]?[0-9]+[+-]$|\^[+-]$|[+-][0-9]+$|[+-]$)/);let c='';if(m){let v=m[0].replace('^','');const p=v.match(/([+-])?([0-9]+)?([+-])?/);if(p){let g=p[1]||p[3]||(v.includes('-')?'-':'+');let n=p[2]||'1';c=g+n;}s=s.replace(m[0],'');}return s.toUpperCase()+'^'+c;}
+function makeKey(f){let s=f.trim().toUpperCase();const m=s.match(/\^(.*)$/);let core=s.replace(/\^(.*)$/,'');let c='';if(m){let v=m[1].replace(/\s+/g,'');if(/^[0-9]+[+-]$/.test(v))c=(v.endsWith('-')?'-':'+')+v.slice(0,-1);else if(/^[+-][0-9]+$/.test(v))c=v;else if(/^[+-]$/.test(v))c=v+'1';}else{const m2=s.match(/([+-])([0-9]+)$/);if(m2){c=m2[1]+m2[2];core=s.replace(/([+-])([0-9]+)$/,'');}else if(/[+-]$/.test(s)){c=(s.endsWith('-')?'-':'+')+'1';core=s.slice(0,-1);}}return core+'^'+c;}
+const CARDS=IONS.map(i=>({name:i.name,key:makeKey(i.formula)}));
+function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+let order=shuffle(CARDS),idx=0,correct=0,streak=0,seen=0;
+const qNum=document.getElementById('qNum'),qTotal=document.getElementById('qTotal'),correctEl=document.getElementById('correct'),streakEl=document.getElementById('streak'),ionName=document.getElementById('ionName'),answer=document.getElementById('answer'),feedback=document.getElementById('feedback');
+qTotal.textContent=order.length;
+function loadCard(){if(idx>=order.length){order=shuffle(CARDS);idx=0;seen=0;}const c=order[idx];ionName.textContent=c.name[0].toUpperCase()+c.name.slice(1);qNum.textContent=(seen+1);answer.value='';feedback.textContent='';feedback.className='feedback tiny';answer.focus();}
+function check(){const u=normalize(answer.value),k=order[idx].key;if(!answer.value.trim())return;if(u===k){correct++;streak++;seen++;feedback.textContent='✓ Correct!';feedback.className='feedback tiny ok';idx++;correctEl.textContent=correct;streakEl.textContent=streak;}else{streak=0;feedback.textContent='✗ Not quite. Keep trying!';feedback.className='feedback tiny no';}}
+function next(){if(feedback.classList.contains('ok'))loadCard();else{check();if(feedback.classList.contains('ok'))loadCard();}}
+function reveal(){const k=order[idx].key,pretty=k.replace('^','');feedback.innerHTML=`Answer: <b>${pretty}</b>`;feedback.className='feedback tiny warn';}
+// event handlers
+['btnCheck','btnNext','btnReveal','btnSkip','btnReset'].forEach(id=>document.getElementById(id)?.addEventListener('click',()=>{if(id==='btnCheck')check();if(id==='btnNext')next();if(id==='btnReveal')reveal();if(id==='btnSkip'){idx++;seen++;streak=0;loadCard();}if(id==='btnReset'){idx=0;correct=0;streak=0;seen=0;order=shuffle(CARDS);correctEl.textContent=0;streakEl.textContent=0;loadCard();}}));
+answer.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();check();}});
+// toggle current set visibility
+const toggleBtn=document.getElementById('toggleSet');
+const setSection=document.getElementById('setSection');
+toggleBtn.addEventListener('click',()=>{setSection.classList.toggle('hidden');toggleBtn.textContent=setSection.classList.contains('hidden')?'Show':'Hide';});
+loadCard();
+</script>
+</body>
+</html>
