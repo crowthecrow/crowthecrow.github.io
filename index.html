@@ -94,7 +94,7 @@
       </section>
 
       <section class="card" id="currentSetCard">
-        <div class="tiny" style="margin-bottom:6px">Current set:</div>
+        <div class="tiny" style="margin-bottom:6px">current set (click current set button to hide)</div>
         <div id="setList" class="grid tiny"></div>
       </section>
 
@@ -212,7 +212,7 @@ const currentSetCard = document.getElementById('currentSetCard');
 let showSet = true;
 function updateSetVisibility(){
   currentSetCard.style.display = showSet ? '' : 'none';
-  toggleSetBtn.textContent = showSet ? 'Hide current set' : 'Show current set';
+  toggleSetBtn.textContent = showSet ? 'Toggle current set' : 'Toggle current set';
 }
 
 
