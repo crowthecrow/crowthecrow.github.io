@@ -155,6 +155,8 @@ function normalizeFormula(input){
     }
     s = s.replace(chargeMatch[0],'');
   }
+  if (!s.includes('^') && /[+-]/.test(charge)) s += '^';
+
   return s.toUpperCase() + '^' + charge;
 }
 
