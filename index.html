@@ -6,97 +6,224 @@
 <title>Polyatomic Ions Quiz (All Modes)</title>
 <style>
   :root{
-    --bg:#0f172a; --panel:#111827; --ink:#e5e7eb; --muted:#94a3b8;
-    --accent:#38bdf8; --good:#34d399; --bad:#f87171; --warn:#fbbf24;
+    /* color system tuned to the screenshot */
+    --bg:#0d1420;
+    --panel:#101826;
+    --card:#0d1723;
+    --ink:#e7eef7;
+    --muted:#93a4b8;
+    --line:#1b2838;
+
+    --accent:#4da3ff;
+    --accent-2:#7b61ff;
+    --ok:#2bc480;
+    --no:#ff5d6c;
+    --warn:#ffb155;
+
+    --radius:16px;
+    --ring:0 0 0 3px rgba(77,163,255,.25);
   }
+
   *{box-sizing:border-box}
-  body{margin:0; font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
-       background:linear-gradient(180deg,#0b1224, #0f172a 40%, #0b1224 100%);
-       color:var(--ink); min-height:100svh; display:flex; align-items:center; justify-content:center; padding:24px}
-  .app{width:min(1000px, 100%); background:rgba(17,24,39,.85); border:1px solid rgba(148,163,184,.2);
-       border-radius:18px; box-shadow:0 10px 30px rgba(0,0,0,.35); overflow:hidden}
-  header{padding:18px 20px; border-bottom:1px solid rgba(148,163,184,.2); display:grid; gap:10px}
-  h1{font-size:20px; margin:0}
-  .controls{display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between}
-  select, button, input[type="text"]{font:inherit}
-  select, button{padding:10px 12px; border-radius:12px; border:1px solid rgba(148,163,184,.35); background:#0b1224; color:var(--ink)}
-  .toggle{background:rgba(56,189,248,.15); color:var(--accent); border-color:rgba(56,189,248,.35); font-weight:700}
-  .pill{font-size:12px; padding:6px 10px; border-radius:999px; background:rgba(56,189,248,.15); color:var(--accent); border:1px solid rgba(56,189,248,.35)}
+  body{
+    margin:0;
+    font-family:ui-sans-serif,system-ui,Segoe UI,Roboto,Ubuntu,"Helvetica Neue",Arial;
+    color:var(--ink);
+    background:
+      radial-gradient(1100px 520px at 65% -10%, #122033 0%, transparent 60%),
+      var(--bg);
+    min-height:100svh;
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    padding:28px;
+  }
+
+  .app{
+    width:min(1100px,100%);
+    background:rgba(16,24,38,.9);
+    border:1px solid rgba(147,164,184,.18);
+    border-radius:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+    overflow:hidden;
+  }
+
+  /* HEADER */
+  header{
+    padding:18px 20px;
+    border-bottom:1px solid rgba(147,164,184,.18);
+    display:grid;
+    gap:10px;
+  }
+  h1{margin:0; font-size:28px; font-weight:800; letter-spacing:.2px}
+
+  .controls{
+    display:flex; gap:12px; flex-wrap:wrap; align-items:center; justify-content:space-between;
+    background:var(--panel); border:1px solid var(--line); border-radius:var(--radius); padding:12px;
+  }
+
+  /* select, toggle, chip */
+  select, button{font:inherit}
+  .select{
+    appearance:none;
+    background:#0e1622;
+    color:var(--ink);
+    border:1px solid #223246;
+    border-radius:12px;
+    height:38px; padding:0 38px 0 12px;
+    background-image:
+      linear-gradient(45deg,transparent 50%,var(--muted) 50%),
+      linear-gradient(135deg,var(--muted) 50%,transparent 50%),
+      linear-gradient(to right,transparent,transparent);
+    background-position:calc(100% - 22px) 15px, calc(100% - 16px) 15px, 100% 0;
+    background-size:5px 5px,5px 5px,2.5em 100%;
+    background-repeat:no-repeat;
+  }
+  .toggle{
+    background:rgba(77,163,255,.15);
+    color:var(--accent);
+    border:1px solid rgba(77,163,255,.35);
+    border-radius:12px; height:38px; padding:0 12px; font-weight:700;
+  }
+  .pill-hint{
+    font-size:14px; color:#cfe0f2;
+    background:#12233a; border:1px dashed #274061;
+    padding:6px 10px; border-radius:999px;
+    white-space:nowrap;
+  }
+  .btn-ghost{
+    height:38px; padding:0 12px; border-radius:12px; border:1px solid #223246;
+    background:#0f1b2b; color:var(--ink); font-weight:700; cursor:pointer;
+  }
+
+  /* MAIN */
   main{padding:20px; display:grid; gap:16px}
-  .card{background:rgba(2,6,23,.55); border:1px solid rgba(148,163,184,.2); border-radius:16px; padding:16px}
-  .row{display:flex; flex-wrap:wrap; gap:12px; align-items:center}
-  .name{font-size:20px; font-weight:700}
+
+  .stats{
+    display:flex; gap:10px; flex-wrap:wrap;
+  }
+  .badge{
+    background:#0e1827; border:1px solid #223246; padding:8px 12px; border-radius:999px;
+    font-weight:800; font-size:14px;
+  }
+  .badge.ok{border-color:rgba(43,196,128,.35); color:#9be7c3}
+  .badge.no{border-color:rgba(255,93,108,.35); color:#ffb3bb}
+  .badge.streak{border-color:rgba(123,97,255,.35); color:#d3ccff}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);
+  }
+  .card-head{
+    display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:8px;
+  }
   .tiny{font-size:12px; color:var(--muted)}
-  input[type="text"]{flex:1 1 320px; min-width:260px; font-size:18px; padding:12px 14px; border-radius:12px; border:1px solid rgba(148,163,184,.25); background:#0b1224; color:var(--ink); outline:none}
-  input[type="text"]:focus{ border-color:var(--accent); box-shadow:0 0 0 3px rgba(56,189,248,.25) }
-  button{cursor:pointer}
-  .btn{padding:12px 14px; border-radius:12px; border:1px solid rgba(148,163,184,.35); background:rgba(148,163,184,.12); color:var(--ink); font-weight:700}
-  .btn.primary{background:rgba(56,189,248,.15); color:var(--accent); border-color:rgba(56,189,248,.35)}
-  .badge{padding:6px 10px; border-radius:10px; font-size:12px; border:1px solid rgba(148,163,184,.25)}
-  .ok{color:#052e1a; background:var(--good); border-color:rgba(255,255,255,.35)}
-  .no{color:#3a0d0d; background:var(--bad); border-color:rgba(255,255,255,.35)}
-  .warn{color:#1c1504; background:var(--warn); border-color:rgba(255,255,255,.35)}
+  .name{font-size:26px; font-weight:800; letter-spacing:.3px}
+
+  .row{display:flex; flex-wrap:wrap; gap:12px; align-items:center}
+  input[type="text"]{
+    flex:1 1 420px; min-width:260px; height:44px;
+    background:#0b131e; color:var(--ink);
+    border:1px solid #223246; border-radius:12px; padding:0 12px; font-weight:700;
+    outline:none;
+  }
+  input[type="text"]:focus{border-color:#2b4d78; box-shadow:var(--ring)}
+
+  .btn{
+    height:44px; padding:0 14px; border-radius:12px; cursor:pointer;
+    border:1px solid #223246; background:#0f1b2b; color:var(--ink); font-weight:800;
+    transition:transform .06s ease, background .12s ease, box-shadow .12s ease;
+  }
+  .btn:hover{background:#12233a}
+  .btn:focus{outline:none; box-shadow:var(--ring)}
+  .btn.primary{background:linear-gradient(180deg,#1a3a63,#142a46); border-color:#274061}
+  .btn.warn{background:#3a2a11; border-color:#6b4a16}
+  .btn.next{background:linear-gradient(180deg,#28406b,#21365c); border-color:#2f4a78}
+
   .feedback{min-height:28px; font-weight:700}
-  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px}
-  kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; font-size:12px; padding:2px 6px; border:1px solid rgba(148,163,184,.35); border-bottom-width:2px; border-radius:6px; background:#020617}
+  .feedback.ok{color:#9be7c3}
+  .feedback.no{color:#ffb3bb}
+  .feedback.warn{color:#ffd39a}
+
   .foot{display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap}
+  kbd{font-family:ui-monospace, Menlo, Consolas, "SF Mono", monospace; font-size:12px; padding:2px 6px; border:1px solid #274061; border-bottom-width:2px; border-radius:6px; background:#0b1626; color:#cfe0f2}
+  @media (max-width:640px){
+    h1{font-size:22px}
+    .name{font-size:22px}
+  }
 </style>
 </head>
 <body>
   <div class="app" role="application" aria-label="Polyatomic Ions Quiz">
     <header>
       <h1>polyatomic ions practice</h1>
+
       <div class="controls">
-        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap">
-          <label class="tiny">Set:</label>
-          <select id="mode">
+        <div class="row" style="flex:1 1 auto">
+          <label class="tiny" style="align-self:center">Set:</label>
+          <select id="mode" class="select">
             <option value="right">Right column</option>
             <option value="left">Left column</option>
             <option value="middle">Middle column</option>
             <option value="all">All items (all columns)</option>
           </select>
-          <button id="direction" class="toggle" title="Switch prompt direction">Prompt: name → you type formula</button>
+
+          <button id="direction" class="toggle" title="Switch prompt direction">
+            Prompt: name → you type formula
+          </button>
         </div>
-        <button id="toggleSet" class="btn" title="Show or hide current set">Hide current set</button>
-        <span class="pill">Type like <b>NH4+</b>, <b>SO4^2-</b>, or names like <b>hydronium</b></span>
+
+        <button id="toggleSet" class="btn-ghost" title="Show or hide current set">
+          Hide current set
+        </button>
+
+        <span class="pill-hint">Type like <b>NH4+</b>, <b>SO4^2-</b>, or names like <b>hydronium</b></span>
       </div>
     </header>
+
     <main>
       <section class="card">
-        <div class="row" style="justify-content:space-between; gap:16px">
-          <div class="row">
-            <span class="badge" style="display:none">Question <span id="qNum">1</span>/<span id="qTotal">7</span></span>
-            <span class="badge">Correct <span id="correct">0</span></span>
-            <span class="badge">Wrong <span id="wrong">0</span></span>
-            <span class="badge">Streak <span id="streak">0</span></span>
+        <div class="row" style="justify-content:space-between">
+          <div class="stats">
+            <span class="badge ok">Correct <span id="correct">0</span></span>
+            <span class="badge no">Wrong <span id="wrong">0</span></span>
+            <span class="badge streak">Streak <span id="streak">0</span></span>
           </div>
-          <div class="grid">
+
+          <div class="row">
             <button id="btnCheck" class="btn primary">Check</button>
             <button id="btnReveal" class="btn" title="Reveal the answer">Reveal</button>
-            <button id="btnSkip" class="btn" title="Skip & next">Skip</button>
-            <button id="btnReset" class="btn" title="Reset score & reshuffle">Reset</button>
+            <button id="btnSkip" class="btn warn" title="Skip & next">Skip</button>
           </div>
         </div>
       </section>
 
       <section class="card">
-        <div class="row">
+        <div class="card-head">
           <div>
             <div class="tiny" id="promptLabel">Ion name</div>
             <div class="name" id="promptValue">—</div>
           </div>
+          <button id="btnReset" class="btn-ghost" title="Reset score & reshuffle">Reset</button>
         </div>
-        <div class="row" style="margin-top:12px">
+
+        <div class="row">
           <input id="answer" type="text" placeholder="Type the formula e.g. H3O+ or the name e.g. hydronium" autocomplete="off" />
-          <button id="btnNext" class="btn">Next ►</button>
+          <button id="btnNext" class="btn next">Next ►</button>
         </div>
+
         <div class="feedback tiny" id="feedback"></div>
-        <div class="tiny" style="opacity:.9; margin-top:8px">Hints: For formulas, ASCII only. Either <kbd>SO4^2-</kbd> or <kbd>SO4-2</kbd> is OK. For names, case/spacing/hyphens don’t matter. Aliases like <b>bicarbonate</b> for hydrogen carbonate are accepted.</div>
+        <div class="tiny" style="opacity:.9; margin-top:8px">
+          Hints: For formulas, ASCII only. Either <kbd>SO4^2-</kbd> or <kbd>SO4-2</kbd> is OK. For names, case/spacing/hyphens don’t matter. Aliases like <b>bicarbonate</b> for hydrogen carbonate are accepted.
+        </div>
       </section>
 
       <section class="card" id="currentSetCard">
-        <div class="tiny" style="margin-bottom:6px">current set                      tip: click "toggle current set" to hide</div>
-        <div id="setList" class="grid tiny"></div>
+        <div class="tiny" style="margin-bottom:6px">current set &nbsp;&nbsp;&nbsp; tip: click "toggle current set" to hide</div>
+        <div id="setList" class="tiny" style="display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:10px"></div>
       </section>
 
       <div class="foot tiny">
@@ -106,10 +233,9 @@
     </main>
   </div>
 
+<!-- ====== YOUR ORIGINAL JS (unchanged, just moved) ====== -->
 <script>
-
-// === Data sets (pink highlighted only) ===
-// Left column (pink): acetate, carbonate, cyanide, dichromate
+/* Data sets and helpers unchanged */
 const LEFT = [
   { name:'acetate',         formula:'CH3COO-',  aliases:['ethanoate'] },
   { name:'carbonate',       formula:'CO3^2-' },
@@ -117,14 +243,12 @@ const LEFT = [
   { name:'dichromate',      formula:'Cr2O7^2-' },
 ];
 
-// Middle column (pink): hydrogen carbonate, hydroxide, nitrate
 const MIDDLE = [
   { name:'hydrogen carbonate', formula:'HCO3-', aliases:['bicarbonate'] },
   { name:'hydroxide',          formula:'OH-' },
   { name:'nitrate',            formula:'NO3-' },
 ];
 
-// Right column (pink): permanganate, peroxide, phosphate, sulfate, thiosulfate, ammonium, hydronium
 const RIGHT = [
   { name:'permanganate',   formula:'MnO4-' },
   { name:'peroxide',       formula:'O2^2-' },
@@ -137,19 +261,10 @@ const RIGHT = [
 
 const ALL = [...LEFT, ...MIDDLE, ...RIGHT];
 
-// === Helpers ===
-
-// Canonicalize a formula into CORE^SIGNMAG, e.g. MnO4^-1, SO4^2-, NH4^+1
 function canonicalKey(formula){
   let s = String(formula || '').trim().toUpperCase();
-
-  // Normalize spaces and unicode minus
   s = s.replace(/\s+/g, '').replace(/−/g,'-');
-
-  // Pull charge if present in any of these forms: ^2-, -2, ^-, -, +, +2, 2+
-  let core = s;
-  let charge = ''; // like "-1", "+2"
-  // caret style first
+  let core = s, charge = '';
   const caret = s.match(/\^([+\-]?\d*[+\-]?)$/);
   if(caret){
     core = s.replace(/\^([+\-]?\d*[+\-]?)$/, '');
@@ -159,33 +274,20 @@ function canonicalKey(formula){
     else if(/^[+\-]$/.test(c)) charge = c + '1';
     else if(/^\d+$/.test(c)) charge = '+' + c;
   } else {
-    // trailing -2 or +2
     const trail = s.match(/([+\-])(\d+)$/);
     if(trail){ core = s.slice(0, -trail[0].length); charge = trail[1] + trail[2]; }
     else if(/[+\-]$/.test(s)){ core = s.slice(0, -1); charge = (s.endsWith('-')?'-':'+') + '1'; }
   }
-
-  if(!charge) charge = '+0'; // neutral never used but prevents undefined
+  if(!charge) charge = '+0';
   return core + '^' + charge;
 }
+function normName(n){ return String(n||'').toLowerCase().replace(/[^a-z]/g,''); }
+function withAliases(item){ const names=[item.name, ...(item.aliases||[])].map(normName); return {...item, names, key:canonicalKey(item.formula)}; }
 
-// Accept names case/space/punctuation-insensitively
-function normName(n){
-  return String(n||'').toLowerCase().replace(/[^a-z]/g,'');
-}
-
-// Expand aliases and precompute canonical key
-function withAliases(item){
-  const names = [item.name, ...(item.aliases || [])].map(normName);
-  return { ...item, names, key: canonicalKey(item.formula) };
-}
-
-// === State ===
 let currentSet = RIGHT.map(withAliases);
-let direction = 'name->formula'; // or 'formula->name'
+let direction = 'name->formula';
 let order = []; let idx=0, correct=0, streak=0, seen=0;
 
-// === UI refs ===
 const modeSel = document.getElementById('mode');
 const dirBtn = document.getElementById('direction');
 const qNum = document.getElementById('qNum');
@@ -206,15 +308,13 @@ const btnReset = document.getElementById('btnReset');
 const toggleSetBtn = document.getElementById('toggleSet');
 const currentSetCard = document.getElementById('currentSetCard');
 
-// Build current-set list and reset
 function setMode(which){
   const map = { left:LEFT, middle:MIDDLE, right:RIGHT, all:ALL };
   currentSet = (map[which] || RIGHT).map(withAliases);
-  qTotal.textContent = currentSet.length;
+  if (qTotal) qTotal.textContent = currentSet.length; // optional label
   setList.innerHTML = currentSet.map(x => `<div>${x.name} → <b>${x.formula}</b></div>`).join('');
   resetRound();
 }
-
 function setDirection(dir){
   direction = dir;
   if(direction==='name->formula'){
@@ -226,36 +326,33 @@ function setDirection(dir){
     promptLabel.textContent = 'Ion formula';
     answer.placeholder = 'Type the name e.g. sulfate';
   }
-  loadCard(); // re-render current card with new prompt
+  loadCard();
 }
-
 let showSet = true;
 function updateSetVisibility(){
   currentSetCard.style.display = showSet ? '' : 'none';
   toggleSetBtn.textContent = showSet ? 'Hide current set' : 'Show current set';
 }
-
 function shuffle(arr){ const a=arr.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 
 function resetRound(){
   order = shuffle(currentSet);
   idx=0; seen=0; correct=0; streak=0;
-  correctEl.textContent = 0; streakEl.textContent = 0; qNum.textContent = 1;
+  correctEl.textContent = 0; streakEl.textContent = 0;
+  if (qNum) qNum.textContent = 1;
   feedback.textContent=''; feedback.className='feedback tiny';
   loadCard();
 }
-
 function loadCard(){
   if(idx>=order.length){ order = shuffle(currentSet); idx=0; seen=0; }
   const card = order[idx];
-  qNum.textContent = (seen+1);
+  if (qNum) qNum.textContent = (seen+1);
   promptValue.textContent = (direction==='name->formula')
       ? (card.name[0].toUpperCase() + card.name.slice(1))
       : card.formula;
   answer.value=''; answer.focus();
   feedback.textContent=''; feedback.className='feedback tiny';
 }
-
 function normalizeFormula(input){
   if(!input) return '';
   let s = String(input).trim().replace(/\s+/g,'').replace(/−/g,'-')
@@ -263,7 +360,6 @@ function normalizeFormula(input){
     .replace(/[⁰¹²³⁴⁵⁶⁷⁸⁹]/g, d => '0123456789'["⁰¹²³⁴⁵⁶⁷⁸⁹".indexOf(d)]);
   return canonicalKey(s);
 }
-
 function check(){
   if(!answer.value.trim()) return;
   if(direction==='name->formula'){
@@ -276,23 +372,16 @@ function check(){
     if(ok){ onCorrect(); } else { onWrong(); }
   }
 }
-
 function onCorrect(){
   correct++; streak++; seen++; idx++;
   feedback.textContent = '✓ Correct!'; feedback.className = 'feedback tiny ok';
   correctEl.textContent = correct; streakEl.textContent = streak;
 }
-
-
 function onWrong(){
-  streak = 0;
-  streakEl.textContent = 0;
-
+  streak = 0; streakEl.textContent = 0;
   const card = order[idx];
   const ans = (direction==='name->formula') ? card.formula : (card.name);
   const extra = (direction!=='name->formula' && card.aliases && card.aliases.length) ? ` (aka ${card.aliases.join(', ')})` : '';
-
-  // Auto-reveal the correct answer on wrong attempt
   feedback.innerHTML = `✗ Incorrect. Answer: <b>${ans}</b>${extra}`;
   feedback.className = 'feedback tiny no';
   wrongEl.textContent = Number(wrongEl.textContent) + 1;
@@ -303,8 +392,6 @@ function reveal(){
   const extra = (direction!=='name->formula' && card.aliases && card.aliases.length) ? ` (aka ${card.aliases.join(', ')})` : '';
   feedback.innerHTML = `Answer: <b>${ans}</b>${extra}`; feedback.className = 'feedback tiny warn';
 }
-
-// Events
 modeSel.addEventListener('change', e=> setMode(e.target.value));
 dirBtn.addEventListener('click', ()=> setDirection(direction==='name->formula' ? 'formula->name' : 'name->formula'));
 btnCheck.addEventListener('click', check);
@@ -313,49 +400,38 @@ btnReveal.addEventListener('click', reveal);
 btnSkip.addEventListener('click', ()=>{ idx++; seen++; streak=0; loadCard(); });
 btnReset.addEventListener('click', resetRound);
 answer.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ e.preventDefault(); check(); } });
-
 toggleSetBtn.addEventListener('click', ()=>{ showSet = !showSet; updateSetVisibility(); });
 updateSetVisibility();
-
-// Init
 setMode('right');
 setDirection('name->formula');
-
 </script>
 
-<!-- Added by ChatGPT: Enter key flow (1st = Check, 2nd = Next). Visuals unchanged. -->
+<!-- Enter key flow helper (check → next) -->
 <script>
 (function(){
   if (window.__enterFlowInstalledV2) return;
   window.__enterFlowInstalledV2 = true;
-
-  function byId(id){ return document.getElementById(id); }
-  const answerEl = byId('answer');
-  const btnCheck = byId('btnCheck');
-  const btnNext  = byId('btnNext');
-  const btnSkip  = document.getElementById('btnSkip') || null;
-  const btnReset = byId('btnReset');
-
+  const answerEl = document.getElementById('answer');
+  const btnCheck = document.getElementById('btnCheck');
+  const btnNext  = document.getElementById('btnNext');
+  const btnSkip  = document.getElementById('btnSkip');
+  const btnReset = document.getElementById('btnReset');
   if (!answerEl || !btnCheck || !btnNext) return;
 
-  let phase = 'check'; // check -> next
-
+  let phase = 'check';
   function doCheck(){ btnCheck.click(); phase = 'next'; }
   function doNext(){ btnNext.click(); phase = 'check'; }
 
-  // Reset phase on user edits or explicit nav
-  answerEl.addEventListener('input', ()=>{ phase = 'check'; }, { passive: true });
-  [btnNext, btnReset, btnSkip].forEach(btn => { if (btn) btn.addEventListener('click', ()=>{ phase = 'check'; }, { passive: true }); });
+  answerEl.addEventListener('input', ()=>{ phase = 'check'; }, { passive:true });
+  [btnNext, btnReset, btnSkip].forEach(btn => btn && btn.addEventListener('click', ()=>{ phase = 'check'; }, { passive:true }));
 
-  // REPLACE the original Enter handler by intercepting at capture phase and stopping propagation.
   answerEl.addEventListener('keydown', function(e){
     if (e.key !== 'Enter') return;
     e.preventDefault();
-    e.stopImmediatePropagation(); // Block the original Enter=>check listener
-    if (phase === 'check') { doCheck(); } else { doNext(); }
-  }, { capture: true });
+    e.stopImmediatePropagation();
+    if (phase === 'check') doCheck(); else doNext();
+  }, { capture:true });
 })();
 </script>
-
 </body>
 </html>
